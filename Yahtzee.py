@@ -50,7 +50,7 @@ def turn_roll(roll_list):
         print(roll_list)
         keep_list = []
         print()
-        keeper_ind = str(input('Which dice to keep? Press "a" to hold all, "0" to hold none: '))
+        keeper_ind = str(input('Which dice to keep? Enter "a" to hold all, "0" to hold none: '))
         print()
         if keeper_ind == '0':
             roll_list = diceRoll(5)
@@ -219,16 +219,22 @@ print('Press "Q" to quit at any time')
 print()
 print('***************************************')
 print('***************************************')
+
 print()
-time.sleep(1)
-for i in [7,'.','.',6,'.','.',5,'.','.',4,'.','.',3,'.','.',2,'.','.',1,]:
-    print(i, end='')
-    time.sleep(.33)
-    if i == 1:
-        print()
-        print('Lets Play')
+to_play = input('Press Enter to start ')
+if to_play:
+    pass
+
+##time.sleep(1)
+##for i in [7,'.','.',6,'.','.',5,'.','.',4,'.','.',3,'.','.',2,'.','.',1,]:
+##    print(i, end='')
+##    time.sleep(.33)
+##    if i == 1:
+##        print()
+##        print('Lets Play')
 print()
 print()
+print('Lets Play')
 print()
 print()
 
@@ -251,7 +257,7 @@ while len(choices) > 0:
 
     while not_good_choice:
     
-        score_choice = str(input('How do you want to play this roll? '))
+        score_choice = str(input('How to play this round? Pick from choices '))
         print()
 
         if score_choice == 'Q':
@@ -352,4 +358,46 @@ while len(choices) > 0:
         time.sleep(1)
 
 quit_game()
+
+# GUI DICE
+
+########
+#      #
+#  ()  #
+#      #
+########
+
+########
+#  ()  #
+#      #
+#  ()  #
+########
+
+########
+#  ()  #
+#  ()  #
+#  ()  #
+########
+
+########
+# ()() #
+#      #
+# ()() #
+########
+
+########
+# ()() #
+#  ()  #
+# ()() #
+########
+
+########
+#()()()#
+#      #
+#()()()#
+########
+
+
+
+
 
