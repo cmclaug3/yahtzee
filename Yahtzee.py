@@ -3,6 +3,8 @@
 import random
 import time
 
+from score_board import add_to_score_board, show_score_board
+from helper import master_help, show_keyboard_shortcuts
 
 
 # End game function
@@ -46,11 +48,14 @@ def come_correct(string_of_nums):
 # Complete all rolls and keeps in turn
 def turn_roll(roll_list):
     turns = 3
+    print()
+    print()
+    print()
     while turns > 0:
-        print(roll_list)
+        print('Your Dice  -->  {}'.format(roll_list))
         keep_list = []
         print()
-        keeper_ind = str(input('Which dice to keep? Enter "a" to hold all, "0" to hold none: '))
+        keeper_ind = str(input('Which dice to keep? Enter "a" to hold all, "0" to hold none\nOr "H" for help: '))
         print()
         if keeper_ind == '0':
             roll_list = diceRoll(5)
@@ -60,6 +65,18 @@ def turn_roll(roll_list):
             break
         elif keeper_ind == 'Q':
             return 'user wants to quit'
+        elif keeper_ind == 'H':
+            master_help()
+            continue
+        elif keeper_ind == 'K':
+            show_keyboard_shortcuts()
+            continue
+        elif keeper_ind == 'S':
+            show_score_board('yahtzee_scores.json')
+            continue
+        elif keeper_ind == 'C':
+            show_remaining_choices()
+            continue
         elif come_correct(keeper_ind) == False:
             print('You need to enter a valid position(s) or command')
             print()
@@ -167,6 +184,14 @@ def is_large_straight(roll):
     else:
         return False
 
+# Show list of remaining score choices in individual game
+def show_remaining_choices():
+    print()
+    print('______________________________________________')
+    print('Still need -->  {}'.format('  '.join([i for i in num_choices if i in choices])))
+    print('           -->  {}'.format('  '.join([i for i in ex_choices if i in choices])))
+    print('______________________________________________')
+    print()
 
 
 
@@ -178,6 +203,7 @@ num_choices = ['1s','2s','3s','4s','5s','6s']
 ex_choices = ['fh','ss','ls','3ok','4ok','y','w']
 choices = num_choices + ex_choices
 
+
 print()
 print()
 print('***************************************')
@@ -186,36 +212,38 @@ print()
 print('WELCOME TO YAHTZEE!')
 print()
 print()
+print('Hold dice by place number..')
 print()
-print('Hold dice by place number')
+print('     Set of dice   -->    [4,1,4,4,6]')
+print('     Positions     -->     1 2 3 4 5')
 print()
-print('Set of dice   -->    [4,1,4,4,6]')
-print('Positions     -->     1 2 3 4 5')
-print()
-print('For example: to hold the three 4\'s, enter 134')
-print()
-print()
-print('You have up to three rolls to obtain your best set of dice')
+print('     For example: to hold the three 4\'s, enter 134')
 print()
 print()
-print('Then make a scoring choice')
+print('You have up to three rolls to obtain your best set of dice.')
 print()
-print('CHOICES ---- HOW TO CHOOSE')
-print('One\'s             1s')
-print('Two\'s             2s')
-print('Three\'s           3s')
-print('Four\'s            4s')
-print('Five\'s            5s')
-print('Six\'s             6s')
-print('Full House        fh')
-print('Small Straight    ss')
-print('Large Straight    ls')
-print('Three of a Kind   3ok')
-print('Four of a Kind    4ok')
-print('Yahtzee           y')
-print('Wild              w')
 print()
-print('Press "Q" to quit at any time')
+print('Then make a scoring choice:')
+print()
+print('     CHOICES   |   HOW TO CHOOSE')
+print('     ===========================')
+print('     One\'s                 1s')
+print('     Two\'s                 2s')
+print('     Three\'s               3s')
+print('     Four\'s                4s')
+print('     Five\'s                5s')
+print('     Six\'s                 6s')
+print('     Full House            fh')
+print('     Small Straight        ss')
+print('     Large Straight        ls')
+print('     Three of a Kind       3ok')
+print('     Four of a Kind        4ok')
+print('     Yahtzee               y')
+print('     Wild                  w')
+print()
+print('Press "Q" to QUIT at any time')
+print('Press "H" for HELP at any time')
+print('Press "K" for keyboard shortcuts')
 print()
 print('***************************************')
 print('***************************************')
@@ -248,21 +276,40 @@ while len(choices) > 0:
         choices = []
         continue
     
-    print(the_roll)
-    
     print()
     time.sleep(.5)
 
     not_good_choice = True
 
+    print('----------------------------------------------')
+
     while not_good_choice:
     
-        score_choice = str(input('How to play this round? Pick from choices '))
+        print(the_roll)
+        print()
+    
+        score_choice = str(input('How to play this round? Pick from choices\n"C" to view remaining choices: '))
         print()
 
         if score_choice == 'Q':
             choices = []
             break
+
+        elif score_choice == 'S':
+            show_score_board('yahtzee_scores.json')
+            continue
+
+        elif score_choice == 'H':
+            master_help()
+            continue
+
+        elif score_choice == 'K':
+            show_keyboard_shortcuts()
+            continue
+
+        elif score_choice == 'C':
+            show_remaining_choices()
+            continue
 
         elif score_choice not in choices:
             print('You messed up try again. Make an available pick')
@@ -342,22 +389,34 @@ while len(choices) > 0:
         print()
         yay = zip(player_choices, player_rolls)
         
-        print('______________________________________')
+        print('======================================')
         print('SCORE: {}       "Q" to quit at anytime'.format(score))
+        print('                 "H" for help menu')
         print()
         for key, val in yay:
             print('{} = {}'.format(key,val))
 
         choices.remove(str(key))
-        
+
         print()
         print('Still need -->  {}'.format('  '.join([i for i in num_choices if i in choices])))
         print('           -->  {}'.format('  '.join([i for i in ex_choices if i in choices])))
-        print('______________________________________')
+        print('======================================')
         print()
         time.sleep(1)
 
+
+       
+def get_score():
+    return score
+
 quit_game()
+
+add_to_score_board(get_score(), 'yahtzee_scores.json')
+
+show_score_board('yahtzee_scores.json')
+
+
 
 # GUI DICE
 
@@ -396,8 +455,3 @@ quit_game()
 #      #
 #()()()#
 ########
-
-
-
-
-
