@@ -55,6 +55,7 @@ def turn_roll(roll_list):
         print('Your Dice  -->  {}'.format(roll_list))
         keep_list = []
         print()
+        print('{} TURN(S) LEFT'.format(turns))
         keeper_ind = str(input('Which dice to keep? Enter "a" to hold all, "0" to hold none\nOr "H" for help: '))
         print()
         if keeper_ind == '0':
@@ -184,6 +185,7 @@ def is_large_straight(roll):
     else:
         return False
 
+
 # Show list of remaining score choices in individual game
 def show_remaining_choices():
     print()
@@ -194,14 +196,38 @@ def show_remaining_choices():
     print()
 
 
+def is_yahtzee_bonus():
+    if min(the_roll) == max(the_roll):
+        if 'y' not in choices:
+            if LOST_YAHTZEE_BONUS == False:
+                return True
+                    
+                   
+def allow_lower_joker():
+    yahtzee_num = the_roll[0]
+    if str(yahtzee_num) + 's' in choices:
+        print('cant allow lower joker here, must use elsewhere')
+    else:
+        return True
+
+
 
 ## Start of Game
 score = 0
+yahtzee_bonuses = 0
 player_rolls = []
 player_choices = []
+all_upper_scores = []
+
+LOWER_JOKER = False
+LOST_YAHTZEE_BONUS = False
+HAVENT_GOTTEN_YAHTZEE_BONUS_THIS_ROUND = False
+GOT_UPPER_BONUS = False
+
 num_choices = ['1s','2s','3s','4s','5s','6s']
 ex_choices = ['fh','ss','ls','3ok','4ok','y','w']
 choices = num_choices + ex_choices
+
 
 
 print()
@@ -288,8 +314,22 @@ while len(choices) > 0:
         print(the_roll)
         print()
     
-        score_choice = str(input('How to play this round? Pick from choices\n"C" to view remaining choices: '))
-        print()
+
+        if is_yahtzee_bonus() == True:
+            if HAVENT_GOTTEN_YAHTZEE_BONUS_THIS_ROUND == False:
+                print('you got a 100 point bonus!')
+                score += 100
+                HAVENT_GOTTEN_YAHTZEE_BONUS_THIS_ROUND = True
+                yahtzee_bonuses += 1
+            if allow_lower_joker() == True:
+                LOWER_JOKER = True
+                score_choice = str(input('YOU CAN USE LOWER JOKER!!!!\n"C" to view remaining choices: '))
+            else:
+                score_choice = str(input('How to play this round? Pick from choices\n"C" to view remaining choices: '))
+                
+        else:
+            score_choice = str(input('How to play this round? Pick from choices\n"C" to view remaining choices: '))
+
 
         if score_choice == 'Q':
             choices = []
@@ -312,7 +352,7 @@ while len(choices) > 0:
             continue
 
         elif score_choice not in choices:
-            print('You messed up try again. Make an available pick')
+            print('Not a valid choice... Make an available pick')
             continue
         else:
 
@@ -320,41 +360,53 @@ while len(choices) > 0:
             if score_choice == '1s':
                 new = [i for i in the_roll if i == 1]
                 score += sum(new)
+                all_upper_scores.append(sum(new))
                 
             elif score_choice == '2s':
                 new = [i for i in the_roll if i == 2]
                 score += sum(new)
+                all_upper_scores.append(sum(new))
                 
             elif score_choice == '3s':
                 new = [i for i in the_roll if i == 3]
                 score += sum(new)
+                all_upper_scores.append(sum(new))
                 
             elif score_choice == '4s':
                 new = [i for i in the_roll if i == 4]
                 score += sum(new)
+                all_upper_scores.append(sum(new))
                 
             elif score_choice == '5s':
                 new = [i for i in the_roll if i == 5]
                 score += sum(new)
+                all_upper_scores.append(sum(new))
                 
             elif score_choice == '6s':
                 new = [i for i in the_roll if i == 6]
                 score += sum(new)
+                all_upper_scores.append(sum(new))
                 
             elif score_choice == 'ss':
-                if is_small_straight(the_roll) == True:
+                if LOWER_JOKER == True:
+                    score += 30
+                elif is_small_straight(the_roll) == True:
                     score += 30
                 else:
                     print('that is not a small straight')
                 
             elif score_choice == 'ls':
-                if is_large_straight(the_roll) == True:
+                if LOWER_JOKER == True:
+                    score += 40
+                elif is_large_straight(the_roll) == True:
                     score += 40
                 else:
                     print('that is not a large straight')
                 
             elif score_choice == 'fh':
-                if is_full_house(the_roll) == True:
+                if LOWER_JOKER == True:
+                    score += 25
+                elif is_full_house(the_roll) == True:
                     score += 25
                 else:
                     print('that is not a full house')
@@ -375,6 +427,7 @@ while len(choices) > 0:
                 if min(the_roll) == max(the_roll):
                     score += 50
                 else:
+                    LOST_YAHTZEE_BONUS = True
                     print('that is not a yahtzee..')
 
             elif score_choice == 'w':
@@ -382,16 +435,27 @@ while len(choices) > 0:
 
     
             not_good_choice = False
+            LOWER_JOKER = False
+            HAVENT_GOTTEN_YAHTZEE_BONUS_THIS_ROUND = False
             player_rolls.append(the_roll)
             player_choices.append(score_choice)
 
-                
+        sum_uppers = sum(all_upper_scores)
+        if sum_uppers > 63:
+            if GOT_UPPER_BONUS == False:
+                print('YOU JUST GOT YOUR UPPER BONUS')
+                score += 35
+                GOT_UPPER_BONUS = True
+
+
         print()
         yay = zip(player_choices, player_rolls)
         
-        print('======================================')
-        print('SCORE: {}       "Q" to quit at anytime'.format(score))
-        print('                 "H" for help menu')
+        print('==============================================')
+        print('SCORE: {}              "Q" to quit at anytime'.format(score))
+        print('Upper Bonus: {}/63'.format(sum_uppers)+'         "H" for help')
+        if yahtzee_bonuses > 0:
+            print('Yahtzee Bonus: {}'.format(yahtzee_bonuses))
         print()
         for key, val in yay:
             print('{} = {}'.format(key,val))
@@ -401,7 +465,7 @@ while len(choices) > 0:
         print()
         print('Still need -->  {}'.format('  '.join([i for i in num_choices if i in choices])))
         print('           -->  {}'.format('  '.join([i for i in ex_choices if i in choices])))
-        print('======================================')
+        print('==============================================')
         print()
         time.sleep(1)
 
@@ -415,7 +479,6 @@ quit_game()
 add_to_score_board(get_score(), 'yahtzee_scores.json')
 
 show_score_board('yahtzee_scores.json')
-
 
 
 # GUI DICE

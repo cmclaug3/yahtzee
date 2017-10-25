@@ -50,6 +50,8 @@ def show_score_board(fn):
     for k,v in enumerate(new[:5], 1):
         table_data.append([str(k), v[0], str(v[1][0]), v[1][1]])
 
+
+    print()
     print('HIGH SCORES')
     print()
     print_table(table_data)
