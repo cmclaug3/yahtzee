@@ -4,7 +4,7 @@ import random
 import time
 
 from score_board import add_to_score_board, show_score_board
-from helper import master_help, show_keyboard_shortcuts
+from helper import master_help, show_keyboard_shortcuts, point_breakdown, about_yahtzee
 
 
 # End game function
@@ -55,7 +55,8 @@ def turn_roll(roll_list):
         print('Your Dice  -->  {}'.format(roll_list))
         keep_list = []
         print()
-        print('{} TURN(S) LEFT'.format(turns))
+        print('** {} TURN(S) LEFT'.format(turns))
+        print('------------------')
         keeper_ind = str(input('Which dice to keep? Enter "a" to hold all, "0" to hold none\nOr "H" for help: '))
         print()
         if keeper_ind == '0':
@@ -73,6 +74,9 @@ def turn_roll(roll_list):
             show_keyboard_shortcuts()
             continue
         elif keeper_ind == 'S':
+            show_score_board('yahtzee_scores.json', 10)
+            continue
+        elif keeper_ind == 'Sa':
             show_score_board('yahtzee_scores.json')
             continue
         elif keeper_ind == 'C':
@@ -93,6 +97,7 @@ def turn_roll(roll_list):
                 keeper_list.append(randy)
             roll_list = keeper_list
             turns -= 1
+            print()
     print()
     return roll_list
 
@@ -336,6 +341,10 @@ while len(choices) > 0:
             break
 
         elif score_choice == 'S':
+            show_score_board('yahtzee_scores.json', 10)
+            continue
+
+        elif score_choice == 'Sa':
             show_score_board('yahtzee_scores.json')
             continue
 
@@ -441,8 +450,9 @@ while len(choices) > 0:
             player_choices.append(score_choice)
 
         sum_uppers = sum(all_upper_scores)
-        if sum_uppers > 63:
+        if sum_uppers >= 63:
             if GOT_UPPER_BONUS == False:
+                print()
                 print('YOU JUST GOT YOUR UPPER BONUS')
                 score += 35
                 GOT_UPPER_BONUS = True
@@ -453,7 +463,10 @@ while len(choices) > 0:
         
         print('==============================================')
         print('SCORE: {}              "Q" to quit at anytime'.format(score))
-        print('Upper Bonus: {}/63'.format(sum_uppers)+'         "H" for help')
+        if GOT_UPPER_BONUS == False:
+            print('Upper Bonus: {}/63'.format(sum_uppers)+'         "H" for help')
+        else:
+            print('**Upper Bonus: {}/63'.format(sum_uppers)+'         "H" for help')
         if yahtzee_bonuses > 0:
             print('Yahtzee Bonus: {}'.format(yahtzee_bonuses))
         print()
@@ -478,7 +491,7 @@ quit_game()
 
 add_to_score_board(get_score(), 'yahtzee_scores.json')
 
-show_score_board('yahtzee_scores.json')
+show_score_board('yahtzee_scores.json', 10)
 
 
 # GUI DICE

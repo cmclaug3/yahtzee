@@ -3,7 +3,6 @@ import datetime
 import os
 from tablegen import print_table
 
-##from terminaltables import AsciiTable
 
 
 def add_to_score_board(s,fn):
@@ -16,16 +15,26 @@ def add_to_score_board(s,fn):
 
     new = sorted(data.items(), key=lambda e: e[1][0], reverse=True)
 
-    if len(new) >= 5:
-        if s < new[4][1][0]:
-            return 'Sorry, not a new high score'
+    if len(new) >= 10:
+        if s < new[9][1][0]:
+            print()
+            print('Sorry that\'s not a worthy high score')
 
-    n = input('Enter name for high score: ')
-    date = datetime.datetime.now()
-    string_date = date.strftime('%m/%d/%y')
+        else:
+            n = input('Enter name for HIGH score: ')
 
-    
-    data[n] = [s, string_date]
+            date = datetime.datetime.now()
+            string_date = date.strftime('%m/%d/%Y')
+
+            data[n] = [s, string_date]
+
+    else:
+        n = input('Enter name for NEW score: ')
+
+        date = datetime.datetime.now()
+        string_date = date.strftime('%m/%d/%Y')
+
+        data[n] = [s, string_date]
 
     new = sorted(data.items(), key=lambda e: e[1][0], reverse=True)
 
@@ -34,7 +43,7 @@ def add_to_score_board(s,fn):
  
 
 
-def show_score_board(fn):
+def show_score_board(fn, length='a'):
     
     with open(fn, 'r+') as f:
         data = json.load(f)
@@ -44,10 +53,12 @@ def show_score_board(fn):
     with open(fn, 'w+') as end:
         json.dump(data, end)
 
+    if length == 'a':
+        length = len(new)
 
     table_data = [(' ','Name','Score','Date')]
 
-    for k,v in enumerate(new[:5], 1):
+    for k,v in enumerate(new[:length], 1):
         table_data.append([str(k), v[0], str(v[1][0]), v[1][1]])
 
 
@@ -58,22 +69,9 @@ def show_score_board(fn):
 
 
 
-
-
-
- 
-##    print()
-##    print()
-##    print('****************HIGH********************')
-##    print('***************SCORES*******************')
-##    print()
-##    for k,v in enumerate(new[:5], 1):
-##        print('{}. {}  {}   {}'.format(k,v[0],v[1][0],v[1][1]))
-##    print()
-##    print('****************************************')
-##    print('****************************************')
-##    print()
-##    print()
+# Erase all scores except for defaults
+def trash_score_board(fn):
+    pass
 
 
 
