@@ -2,35 +2,47 @@
 
 Play one of your old favorites in your terminal!
 
+REQUIREMENTS
+
+	Python 3
+
+DIRECTIONS
+
+	Navigate to desired directory
+	git init
+	git clone https://github.com/cmclaug3/yahtzee.git
+	python3 Yahtzee.py
+
+
 
 TODO
 
 SCOREBOARD
+
 	allow duplicate keys
 	allow delete (all except defaults)
 	allow show entire scoreboard
 
 
-
-
-
-1 ABOUT YAHTZEE
+1. ABOUT YAHTZEE
 
 	basic intro
 	phases of game
 
 
-2 HOW TO PLAY
+2. HOW TO PLAY
+
 	during rolls (saving by position) / "a" and "0"
 	after rolls (pick choice) / select from available
 
 
-3 STRATEGY
+3. STRATEGY
+
 	how different choice picks affect points
 
 
 
-4 POINT BREAKDOWN
+4. POINT BREAKDOWN
 
 	Upper choices (1s, 2s, 3s, 4s, 5s, 6s)
 		sum of totol dice matching choice
@@ -49,7 +61,7 @@ SCOREBOARD
 
 
 
-5 BONUSES
+5. BONUSES
 
 	35 if upper choices total 63 or more
 
@@ -60,4 +72,4 @@ SCOREBOARD
 
 
 
-6 KB SHORTCUTS
+6. KB SHORTCUTS
