@@ -9,6 +9,7 @@ REQUIREMENTS
 DIRECTIONS
 
 	Navigate to desired directory
+
 	git init
 	git clone https://github.com/cmclaug3/yahtzee.git
 	python3 Yahtzee.py
@@ -24,27 +25,28 @@ SCOREBOARD
 	allow show entire scoreboard
 
 
-1. ABOUT YAHTZEE
+ABOUT YAHTZEE
 
 	basic intro
 	phases of game
 
 
-2. HOW TO PLAY
+HOW TO PLAY
 
 	during rolls (saving by position) / "a" and "0"
 	after rolls (pick choice) / select from available
 
 
-3. STRATEGY
+STRATEGY
 
 	how different choice picks affect points
 
 
 
-4. POINT BREAKDOWN
+POINT BREAKDOWN
 
 	Upper choices (1s, 2s, 3s, 4s, 5s, 6s)
+
 		sum of totol dice matching choice
 
 	Lower choices
@@ -61,7 +63,7 @@ SCOREBOARD
 
 
 
-5. BONUSES
+BONUSES
 
 	35 if upper choices total 63 or more
 
@@ -72,4 +74,4 @@ SCOREBOARD
 
 
 
-6. KB SHORTCUTS
+KB SHORTCUTS
